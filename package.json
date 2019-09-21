@@ -4,17 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "bootstrap": "node ./scripts/bootstrap-fauna-database.js",
     "lambda-serve": "netlify-lambda serve functions",
-    "lambda-build": "netlify-lambda build functions"
+    "lambda-build": "netlify-lambda build functions",
+    "checkForFaunaKey": "node ./scripts/check-for-fauna-key.js",
+    "start": "npm-run-all --parallel checkForFaunaKey start:server",
+    "start:server": "netlify-lambda serve functions -c ./webpack.config.js",
+    "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
+    "build": "npm-run-all --parallel build:**",
+    "build:functions": "netlify-lambda build functions -c ./webpack.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "netlify-lambda": "^1.6.3",
+    "faunadb": "^2.5.2",
     "ow": "^0.13.2"
   },
   "devDependencies": {
-    "eslint": "^5.7.0"
+    "eslint": "^5.7.0",
+    "npm-run-all": "^4.1.5"
   }
 }
